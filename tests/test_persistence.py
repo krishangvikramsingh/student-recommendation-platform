@@ -73,8 +73,8 @@ def test_database_rejects_out_of_range_rating(db_path):
     student = platform.register("Asha Rao", "asha@nmims.edu.in", "secret123", college.college_id)
     rec = next(iter(platform.recommendations))
     with pytest.raises(sqlite3.IntegrityError):
-        store.db.execute(  # noqa: UP031
-            "INSERT INTO reviews VALUES ('RVX','%s','%s',9,'x','Pending','2026-01-01T00:00:00',NULL,'')"
+        store.db.execute(
+            "INSERT INTO reviews VALUES ('RVX','%s','%s',9,'x','Pending','2026-01-01T00:00:00',NULL,'')"  # noqa: UP031
             % (student.user_id, rec)
         )
 
@@ -84,13 +84,13 @@ def test_database_rejects_duplicate_email_and_dangling_foreign_key(db_path):
     platform, college = build_sample_platform(store)
     platform.register("Asha Rao", "asha@nmims.edu.in", "secret123", college.college_id)
     with pytest.raises(sqlite3.IntegrityError):
-        store.db.execute(  # noqa: UP031
+        store.db.execute(
             "INSERT INTO users (user_id,name,email,password_hash,role,college_id,phone,verified,suspended,"
             "failed_attempts,preferences,disabled_notifications) VALUES "
             "('X1','n','asha@nmims.edu.in','h','student','',' ',1,0,0,'[]','[]')"
         )
     with pytest.raises(sqlite3.IntegrityError):
-        store.db.execute(  # noqa: UP031
+        store.db.execute(
             "INSERT INTO reviews VALUES ('RVY','NOUSER','NOREC',3,'x','Pending','2026-01-01T00:00:00',NULL,'')"
         )
 
