@@ -3,4 +3,4 @@
 pytest>=8
 pytest-cov>=5
 requests>=2.31
-playwright>=1.40   # only for scripts/ui_walkthrough.py
+playwright>=1.64.0   # only for scripts/ui_walkthrough.py
