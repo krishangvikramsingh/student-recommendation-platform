@@ -1,0 +1,92 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+rootdir: /home/user/claude-code/student_platform
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collecting ... collected 26 items
+
+tests/test_case_study.py::test_tc01_registration_rejects_non_college_email PASSED [  3%]
+tests/test_case_study.py::test_tc02_account_locks_after_five_failed_logins PASSED [  7%]
+tests/test_case_study.py::test_tc03_unverified_student_cannot_submit_review PASSED [ 11%]
+tests/test_case_study.py::test_tc04_validated_reviews_update_rating_shown_in_search PASSED [ 15%]
+tests/test_extended.py::test_valid_college_email_registers_verified_student PASSED [ 19%]
+tests/test_extended.py::test_lookalike_domain_is_rejected FAILED         [ 23%]
+tests/test_extended.py::test_duplicate_email_is_rejected PASSED          [ 26%]
+tests/test_extended.py::test_duplicate_email_check_ignores_case FAILED   [ 30%]
+tests/test_extended.py::test_login_with_correct_password PASSED          [ 34%]
+tests/test_extended.py::test_login_with_wrong_password PASSED            [ 38%]
+tests/test_extended.py::test_lock_lifts_after_fifteen_minutes PASSED     [ 42%]
+tests/test_extended.py::test_suspended_account_cannot_login FAILED       [ 46%]
+tests/test_extended.py::test_search_is_sorted_by_distance PASSED         [ 50%]
+tests/test_extended.py::test_search_respects_radius PASSED               [ 53%]
+tests/test_extended.py::test_empty_search_prompts_to_expand_radius PASSED [ 57%]
+tests/test_extended.py::test_price_filter PASSED                         [ 61%]
+tests/test_extended.py::test_rating_filter_uses_published_reviews PASSED [ 65%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[0] PASSED  [ 69%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[6] PASSED  [ 73%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[-1] PASSED [ 76%]
+tests/test_extended.py::test_fractional_rating_is_rejected FAILED        [ 80%]
+tests/test_extended.py::test_rejected_review_does_not_count PASSED       [ 84%]
+tests/test_extended.py::test_student_cannot_validate_reviews PASSED      [ 88%]
+tests/test_extended.py::test_report_moves_review_under_review PASSED     [ 92%]
+tests/test_extended.py::test_same_user_cannot_report_twice PASSED        [ 96%]
+tests/test_extended.py::test_recommendations_follow_preferences PASSED   [100%]
+
+=================================== FAILURES ===================================
+______________________ test_lookalike_domain_is_rejected _______________________
+
+world = (<service.Platform object at 0x7fec49ec44d0>, College(college_id='CL0002', name='NMIMS MPSTME', domain='nmims.edu.in', city_id='CT0001'))
+
+    def test_lookalike_domain_is_rejected(world):
+        platform, college = world
+>       with pytest.raises(InvalidCollegeEmail):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidCollegeEmail
+
+tests/test_extended.py:16: Failed
+___________________ test_duplicate_email_check_ignores_case ____________________
+
+world = (<service.Platform object at 0x7fec4a0c8f30>, College(college_id='CL0002', name='NMIMS MPSTME', domain='nmims.edu.in', city_id='CT0001'))
+student = User(user_id='ST0008', name='Asha Rao', email='asha@nmims.edu.in', password_hash='fcf730b6d95236ecd3c9fc2d92d7b6b2bb06...student', college_id='CL0002', verified=True, suspended=False, failed_attempts=0, locked_until=None, preferences=set())
+
+    def test_duplicate_email_check_ignores_case(world, student):
+        platform, college = world
+>       with pytest.raises(DuplicateAccount):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DuplicateAccount
+
+tests/test_extended.py:28: Failed
+_____________________ test_suspended_account_cannot_login ______________________
+
+world = (<service.Platform object at 0x7fec4a197110>, College(college_id='CL0002', name='NMIMS MPSTME', domain='nmims.edu.in', city_id='CT0001'))
+student = User(user_id='ST0008', name='Asha Rao', email='asha@nmims.edu.in', password_hash='fcf730b6d95236ecd3c9fc2d92d7b6b2bb06...'student', college_id='CL0002', verified=True, suspended=True, failed_attempts=0, locked_until=None, preferences=set())
+admin = User(user_id='AD0007', name='Platform Admin', email='admin@platform.in', password_hash='b630f5d579dfef28c45ddf5e3c7a65..., role='admin', college_id='', verified=True, suspended=False, failed_attempts=0, locked_until=None, preferences=set())
+
+    def test_suspended_account_cannot_login(world, student, admin):
+        platform, _ = world
+        platform.suspend_user(admin.user_id, student.user_id)
+>       with pytest.raises(Exception):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Exception
+
+tests/test_extended.py:57: Failed
+______________________ test_fractional_rating_is_rejected ______________________
+
+world = (<service.Platform object at 0x7fec4a0f6710>, College(college_id='CL0002', name='NMIMS MPSTME', domain='nmims.edu.in', city_id='CT0001'))
+student = User(user_id='ST0008', name='Asha Rao', email='asha@nmims.edu.in', password_hash='fcf730b6d95236ecd3c9fc2d92d7b6b2bb06...student', college_id='CL0002', verified=True, suspended=False, failed_attempts=0, locked_until=None, preferences=set())
+
+    def test_fractional_rating_is_rejected(world, student):
+        platform, _ = world
+        rec = next(iter(platform.recommendations.values()))
+>       with pytest.raises(InvalidReview):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE InvalidReview
+
+tests/test_extended.py:106: Failed
+=========================== short test summary info ============================
+FAILED tests/test_extended.py::test_lookalike_domain_is_rejected - Failed: DI...
+FAILED tests/test_extended.py::test_duplicate_email_check_ignores_case - Fail...
+FAILED tests/test_extended.py::test_suspended_account_cannot_login - Failed: ...
+FAILED tests/test_extended.py::test_fractional_rating_is_rejected - Failed: D...
+========================= 4 failed, 22 passed in 0.10s =========================

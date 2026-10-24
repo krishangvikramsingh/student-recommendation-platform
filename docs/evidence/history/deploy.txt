@@ -1,0 +1,13 @@
+GET /health: HTTP 200 {'status': 'ok'}
+POST /register (college email): HTTP 201 {'user_id': 'ST0008', 'verified': True}
+POST /register (gmail): HTTP 422 {'error': 'InvalidCollegeEmail'}
+POST /register (duplicate, other case): HTTP 409 {'error': 'DuplicateAccount'}
+POST /login: token issued
+GET /search pg_hostel: HTTP 200 {'results': [{'id': 'RC0003', 'name': 'Shree PG for Students', 'category': 'pg_hostel', 'rating': 0.0, 'price_level': 2, 'distance_km': 0.0}], 'message': ''}
+GET /search event: HTTP 200 {'results': [], 'message': 'No results nearby. Try expanding the search radius.'}
+POST /reviews: HTTP 201 {'review_id': 'RV0009', 'status': 'Pending'}
+POST /reviews (rating 4.5): HTTP 422 {'error': 'InvalidReview'}
+validate as student: HTTP 403 {'error': 'NotAuthorised'}
+validate as admin: HTTP 200 {'review_id': 'RV0009', 'status': 'Published'}
+GET /search pg_hostel (after validation): HTTP 200 {'results': [{'id': 'RC0003', 'name': 'Shree PG for Students', 'category': 'pg_hostel', 'rating': 5.0, 'price_level': 2, 'distance_km': 0.0}], 'message': ''}
+login after 5 failures: HTTP 423 {'error': 'AccountLocked'}

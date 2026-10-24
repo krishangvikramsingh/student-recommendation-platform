@@ -1,0 +1,11 @@
+services:
+  srp:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]
+    environment:
+      SRP_ADMIN_PASSWORD: ${SRP_ADMIN_PASSWORD:?set SRP_ADMIN_PASSWORD}
+      SRP_BASE_URL: ${SRP_BASE_URL:-http://localhost:8000}
+    volumes: [srp-data:/data]
+    restart: unless-stopped
+volumes:
+  srp-data:

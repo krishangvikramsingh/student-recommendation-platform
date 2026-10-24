@@ -1,0 +1,7 @@
+# Restart persistence check (2026-10-18T08:25:00Z)
+Server stopped and started again on the same SQLite file.
+Student Recommendation Platform running at http://127.0.0.1:8000/ (Ctrl+C to stop)
+--- login as the student registered before the restart (account was locked by smoke test; 423 proves the account and lock state were reloaded):
+{"error": "AccountLocked", "message": "Too many failed attempts. Try again in 15 minutes."}
+--- published review and rating shown in search after restart:
+Shree PG for Students rating 5.0 reviews 1

@@ -1,0 +1,30 @@
+# Consistency analysis across Experiments 1–10
+
+Each item states what disagrees, why it matters, and the smallest correction that keeps the original intent. Nothing was
+silently reconciled: the "Resolution in this build" column says what the code actually does.
+
+| # | Conflict or gap | Where | Implication | Minimal correction | Resolution in this build |
+|---|---|---|---|---|---|
+| C-01 | US6 says a submitted review "appears on the listing within 1 minute", but Experiments 4, 5, 8 and 9 route every review through administrator validation before publication | Exp 1 US6 vs Exp 4/5/9 | If moderation is manual, publication time depends on the administrator | Reword US6: the review is *saved* immediately and *published after approval* | Review is saved as Pending at once, published only on approval. Marked **Partial** in the matrix. |
+| C-02 | The Experiment 2 template example allows search up to 10 s, the project target is 3 s | Exp 2 | Two different search limits in one document | Treat the template text as an example and keep 3 s | 3 s used |
+| C-03 | US4 lists four search categories; US5 and Exp 5 add Events as a fifth category | Exp 1 vs Exp 5 | Search by category and the events list overlap | Allow `event` as a search category and also provide a chronological events list | Both exist |
+| C-04 | US2 allows "college email address **or ID**"; Exp 4 and Exp 5 only model email verification | Exp 1 vs Exp 4/5 | ID verification has no design | Drop the "or ID" wording or add an ID field to Student | Email domain only; not done: ID verification |
+| C-05 | Exp 2 requires encrypted transport; the Exp 10 deployment and this build run plain HTTP on localhost | Exp 2 vs Exp 10 | Credentials cross the network in clear text if exposed | Put a TLS reverse proxy in front for any public use | **Not met**; stated in the NFR table and the README |
+| C-06 | Registration marks a student Verified at once (domain check), while US2 describes verification as a later step "when verification is completed" | Exp 1 vs Exp 9/10 | A domain match does not prove the person owns the mailbox | Send a confirmation link to the college mailbox | Domain check only (no mail server available); an administrator can also verify manually. Limitation disclosed |
+| C-07 | Exp 5 `Student.verificationStatus : String` and `Administrator.adminId/role`; the code uses `User.verified : bool`, one `users` table, `role` column | Exp 5 vs code | Class diagram and code differ in shape | Update the diagram to show `verified : boolean` and `role` on `User`, or keep the diagram as a conceptual model | Code keeps one `User`; documented here |
+| C-08 | Exp 5 operations `checkAvailability`, `bookSlot`, `updateMenu`, `updateInventory`, `checkRegistrationStatus`, `checkOpenStatus`, `updateRentDetails` have no user story | Exp 5 vs Exp 1 | Design contains behaviour nobody asked for | Remove them from the diagram or add stories | **Not implemented** and no UI control suggests they exist. Category-specific attributes (rent range, cuisine, timings, sport types, organizer, venue…) *are* stored |
+| C-09 | No `Notification`, `Report` or `AuditLog` class in Exp 5, although US7, US10 and the Exp 2 constraints need them | Exp 5 vs Exp 1/2 | Behaviour in the code that the class diagram cannot explain | Add the three classes | Implemented as `notifications`, `review_reports` and `audit_log` tables |
+| C-10 | `User.phone` in Exp 5; no story uses it | Exp 5 | Collecting phone numbers adds a privacy duty | Keep optional | Optional field at registration (API), never returned by any endpoint |
+| C-11 | US11 lists "edit-flag" for a reported review; Exp 5 `Review` only has submit/validate/reject | Exp 1 vs Exp 5 | Third moderation outcome is undefined | Define edit-flag or remove | Approve/keep and reject/remove only; edit-flag not implemented |
+| C-12 | Exp 8 Level 1 does not draw "View College/City information" as a separate flow | Exp 8 vs Exp 1 | Reference-data reads are invisible in the DFD | Add a flow from D1/D2 to P3 | Implemented as the public `/colleges` and `/cities` endpoints; DFD unchanged |
+| C-13 | Exp 9/10 describe in-memory storage and an earlier prototype that stored unsalted SHA-256 hashes | Exp 9/10 | Data lost on restart; weak hashing | SQLite plus salted scrypt | Both replaced in this build; Exp 9/10 results remain valid history for the prototype |
+| C-14 | **The Experiment 3 use-case image was not supplied to this build** | Exp 3 | The use-case figure cannot be checked against the original | Re-supply the image | The diagram in the report is redrawn from Exp 1, 4, 5 and is labelled as reconstructed |
+| C-15 | **`SE - Mini Project.docx` (official guideline) was not supplied** | Mini project | Page limit and structure rules could not be read | Re-supply the file | The rules in the project brief (≤ 15 pages; introduction, problem, scope, architecture, diagrams, results, conclusion, references) were followed instead |
+| C-16 | Reports (US7) can be filed against a review that is not yet visible (Pending) because the existing test `test_same_user_cannot_report_twice` does so; the UI only offers Report on published reviews | Exp 1 vs code | The API is looser than the story | Require Published status | Left as is; the UI enforces the story, the API does not |
+| C-17 | Exp 9 and Exp 10 list 26 tests and 13 smoke checks; the current suite has more | Exp 9/10 vs code | Different numbers in different documents | Treat Exp 9/10 as the history of the prototype | Current: 96 tests and 18 smoke checks (see `05_test_report.md`); the original 26 tests still pass unchanged apart from import paths |
+
+## Original defects (Experiment 10) — status
+All four are fixed and have regression tests in the current suite: look-alike domain (`test_lookalike_domain_is_rejected`),
+case-insensitive duplicate (`test_duplicate_email_check_ignores_case`), suspended login (`test_suspended_account_cannot_login`),
+fractional/boolean rating (`test_fractional_rating_is_rejected`, `test_boolean_rating_is_rejected`). The failing run of
+the first prototype (22 passed, 4 failed) and the fixed run (26 passed) are kept in `evidence/history/`.

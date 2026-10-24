@@ -1,0 +1,70 @@
+{
+  "dataset": {
+    "users": 100001,
+    "listings": 2010,
+    "reviews": 20000
+  },
+  "startup_load_s": 0.95,
+  "sequential": {
+    "search": {
+      "count": 30,
+      "median_s": 0.006,
+      "p95_s": 0.0082,
+      "max_s": 0.0097
+    },
+    "login": {
+      "count": 30,
+      "median_s": 0.0507,
+      "p95_s": 0.0597,
+      "max_s": 0.0637
+    },
+    "listing": {
+      "count": 30,
+      "median_s": 0.0036,
+      "p95_s": 0.0045,
+      "max_s": 0.0054
+    },
+    "health": {
+      "count": 30,
+      "median_s": 0.0018,
+      "p95_s": 0.0026,
+      "max_s": 0.0035
+    }
+  },
+  "login_ramp_wall_s": 28.89,
+  "login_ramp": {
+    "count": 500,
+    "median_s": 1.0934,
+    "p95_s": 1.6275,
+    "max_s": 1.8956
+  },
+  "login_ramp_ok": 500,
+  "concurrent_search_wall_s": 3.82,
+  "concurrent_search": {
+    "count": 500,
+    "median_s": 1.3947,
+    "p95_s": 1.8557,
+    "max_s": 1.9368
+  },
+  "concurrent_search_ok": 500,
+  "review_submission": {
+    "attempted": 500,
+    "http_201": 500,
+    "in_memory_new": 500,
+    "rows_in_database": 500,
+    "latency": {
+      "count": 500,
+      "median_s": 0.8324,
+      "p95_s": 0.9718,
+      "max_s": 0.9877
+    }
+  },
+  "restart_recovery": {
+    "seconds_to_healthy": 2.06,
+    "health": {
+      "status": "ok"
+    },
+    "reviews_after_restart": 20500,
+    "users_after_restart": 100001
+  }
+}

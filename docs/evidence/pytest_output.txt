@@ -1,0 +1,124 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python
+cachedir: .pytest_cache
+rootdir: /home/user/claude-code/student-recommendation-platform
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1, cov-7.1.0
+collecting ... collected 96 items
+
+tests/test_api.py::test_health_and_colleges PASSED                       [  1%]
+tests/test_api.py::test_register_status_codes PASSED                     [  2%]
+tests/test_api.py::test_login_failure_and_lockout PASSED                 [  3%]
+tests/test_api.py::test_protected_routes_need_login PASSED               [  4%]
+tests/test_api.py::test_student_cannot_reach_admin_functions PASSED      [  5%]
+tests/test_api.py::test_review_flow_updates_search_rating PASSED         [  6%]
+tests/test_api.py::test_invalid_ratings_return_422 PASSED                [  7%]
+tests/test_api.py::test_report_flow PASSED                               [  8%]
+tests/test_api.py::test_search_validation_and_empty_message PASSED       [  9%]
+tests/test_api.py::test_events_endpoint_is_chronological PASSED          [ 10%]
+tests/test_api.py::test_public_responses_never_expose_private_details PASSED [ 11%]
+tests/test_api.py::test_admin_user_list_masks_email PASSED               [ 12%]
+tests/test_api.py::test_logout_invalidates_token PASSED                  [ 13%]
+tests/test_api.py::test_idle_session_expires PASSED                      [ 14%]
+tests/test_api.py::test_suspending_a_user_ends_their_session PASSED      [ 15%]
+tests/test_api.py::test_notifications_and_settings_endpoints PASSED      [ 16%]
+tests/test_api.py::test_admin_audit_endpoint PASSED                      [ 17%]
+tests/test_api.py::test_malformed_and_unknown_requests PASSED            [ 18%]
+tests/test_api.py::test_oversized_body_is_rejected PASSED                [ 19%]
+tests/test_api.py::test_static_pages_and_headers PASSED                  [ 20%]
+tests/test_api.py::test_path_traversal_is_blocked PASSED                 [ 21%]
+tests/test_api.py::test_errors_do_not_leak_internals PASSED              [ 22%]
+tests/test_case_study.py::test_tc01_registration_rejects_non_college_email PASSED [ 23%]
+tests/test_case_study.py::test_tc02_account_locks_after_five_failed_logins PASSED [ 25%]
+tests/test_case_study.py::test_tc03_unverified_student_cannot_submit_review PASSED [ 26%]
+tests/test_case_study.py::test_tc04_validated_reviews_update_rating_shown_in_search PASSED [ 27%]
+tests/test_extended.py::test_valid_college_email_registers_verified_student PASSED [ 28%]
+tests/test_extended.py::test_lookalike_domain_is_rejected PASSED         [ 29%]
+tests/test_extended.py::test_duplicate_email_is_rejected PASSED          [ 30%]
+tests/test_extended.py::test_duplicate_email_check_ignores_case PASSED   [ 31%]
+tests/test_extended.py::test_login_with_correct_password PASSED          [ 32%]
+tests/test_extended.py::test_login_with_wrong_password PASSED            [ 33%]
+tests/test_extended.py::test_lock_lifts_after_fifteen_minutes PASSED     [ 34%]
+tests/test_extended.py::test_suspended_account_cannot_login PASSED       [ 35%]
+tests/test_extended.py::test_search_is_sorted_by_distance PASSED         [ 36%]
+tests/test_extended.py::test_search_respects_radius PASSED               [ 37%]
+tests/test_extended.py::test_empty_search_prompts_to_expand_radius PASSED [ 38%]
+tests/test_extended.py::test_price_filter PASSED                         [ 39%]
+tests/test_extended.py::test_rating_filter_uses_published_reviews PASSED [ 40%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[0] PASSED  [ 41%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[6] PASSED  [ 42%]
+tests/test_extended.py::test_rating_outside_range_is_rejected[-1] PASSED [ 43%]
+tests/test_extended.py::test_fractional_rating_is_rejected PASSED        [ 44%]
+tests/test_extended.py::test_rejected_review_does_not_count PASSED       [ 45%]
+tests/test_extended.py::test_student_cannot_validate_reviews PASSED      [ 46%]
+tests/test_extended.py::test_report_moves_review_under_review PASSED     [ 47%]
+tests/test_extended.py::test_same_user_cannot_report_twice PASSED        [ 48%]
+tests/test_extended.py::test_recommendations_follow_preferences PASSED   [ 50%]
+tests/test_features.py::test_passwords_are_salted_and_verifiable PASSED  [ 51%]
+tests/test_features.py::test_stored_password_is_not_plaintext PASSED     [ 52%]
+tests/test_features.py::test_short_password_is_rejected PASSED           [ 53%]
+tests/test_features.py::test_subdomain_of_college_domain_is_accepted PASSED [ 54%]
+tests/test_features.py::test_unknown_email_cannot_login PASSED           [ 55%]
+tests/test_features.py::test_lockout_is_recorded_in_audit_log PASSED     [ 56%]
+tests/test_features.py::test_empty_comment_is_rejected PASSED            [ 57%]
+tests/test_features.py::test_boolean_rating_is_rejected PASSED           [ 58%]
+tests/test_features.py::test_spam_and_profanity_are_rejected PASSED      [ 59%]
+tests/test_features.py::test_review_on_unknown_listing_is_rejected PASSED [ 60%]
+tests/test_features.py::test_duplicate_review_for_same_listing_is_rejected PASSED [ 61%]
+tests/test_features.py::test_suspended_user_cannot_submit_review PASSED  [ 62%]
+tests/test_features.py::test_pending_review_does_not_change_rating PASSED [ 63%]
+tests/test_features.py::test_reported_review_is_removed_from_average_until_resolved PASSED [ 64%]
+tests/test_features.py::test_report_requires_reason PASSED               [ 65%]
+tests/test_features.py::test_moderation_outcome_notifies_author_and_reporter PASSED [ 66%]
+tests/test_features.py::test_report_notifies_administrators PASSED       [ 67%]
+tests/test_features.py::test_moderation_queue_lists_pending_and_reported PASSED [ 68%]
+tests/test_features.py::test_students_cannot_use_admin_reads[moderation_queue] PASSED [ 69%]
+tests/test_features.py::test_students_cannot_use_admin_reads[list_students] PASSED [ 70%]
+tests/test_features.py::test_students_cannot_use_admin_reads[audit_entries] PASSED [ 71%]
+tests/test_features.py::test_students_cannot_manage_catalogue PASSED     [ 72%]
+tests/test_features.py::test_admin_manages_cities_colleges_and_listings PASSED [ 73%]
+tests/test_features.py::test_duplicate_college_domain_is_rejected PASSED [ 75%]
+tests/test_features.py::test_listing_details_must_match_category PASSED  [ 76%]
+tests/test_features.py::test_invalid_coordinates_and_price_are_rejected PASSED [ 77%]
+tests/test_features.py::test_archived_listing_leaves_search_but_keeps_reviews PASSED [ 78%]
+tests/test_features.py::test_reinstated_user_can_login_again PASSED      [ 79%]
+tests/test_features.py::test_admin_cannot_be_suspended PASSED            [ 80%]
+tests/test_features.py::test_admin_can_verify_unverified_student PASSED  [ 81%]
+tests/test_features.py::test_search_result_counts_only_published_reviews PASSED [ 82%]
+tests/test_features.py::test_search_boundary_radius_and_invalid_input PASSED [ 83%]
+tests/test_features.py::test_filters_apply_together PASSED               [ 84%]
+tests/test_features.py::test_events_are_listed_chronologically_and_hide_past PASSED [ 85%]
+tests/test_features.py::test_event_filters_by_type_and_date PASSED       [ 86%]
+tests/test_features.py::test_event_requires_date PASSED                  [ 87%]
+tests/test_features.py::test_new_event_notifies_matching_students_only PASSED [ 88%]
+tests/test_features.py::test_disabled_notification_category_is_respected PASSED [ 89%]
+tests/test_features.py::test_read_status_is_updated PASSED               [ 90%]
+tests/test_features.py::test_user_cannot_mark_someone_elses_notification PASSED [ 91%]
+tests/test_features.py::test_updated_preferences_apply_immediately PASSED [ 92%]
+tests/test_features.py::test_invalid_preferences_are_rejected PASSED     [ 93%]
+tests/test_persistence.py::test_data_survives_restart PASSED             [ 94%]
+tests/test_persistence.py::test_ids_do_not_collide_after_restart PASSED  [ 95%]
+tests/test_persistence.py::test_lockout_state_is_persisted PASSED        [ 96%]
+tests/test_persistence.py::test_database_rejects_out_of_range_rating PASSED [ 97%]
+tests/test_persistence.py::test_database_rejects_duplicate_email_and_dangling_foreign_key PASSED [ 98%]
+tests/test_persistence.py::test_notification_read_status_survives_restart PASSED [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.16-final-0 _______________
+
+Name                  Stmts   Miss  Cover   Missing
+---------------------------------------------------
+src/srp/__init__.py       0      0   100%
+src/srp/__main__.py      29     29     0%   1-36
+src/srp/config.py        10      0   100%
+src/srp/errors.py        26      0   100%
+src/srp/models.py        87      0   100%
+src/srp/security.py      18      3    83%   19, 23-24
+src/srp/seed.py          22      0   100%
+src/srp/server.py       270     16    94%   186-187, 191-193, 236, 241, 251-252, 266, 270-271, 346-348, 360
+src/srp/service.py      539     40    93%   64, 76-77, 143, 162, 175, 178-179, 214, 216, 221, 318, 330, 339, 342, 364, 420, 447, 449, 523, 542, 544-547, 571, 581, 584, 588, 590, 593, 596, 598, 600-602, 604-606, 616
+src/srp/store.py         67      1    99%   64
+---------------------------------------------------
+TOTAL                  1068     89    92%
+============================= 96 passed in 22.34s ==============================

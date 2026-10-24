@@ -1,0 +1,43 @@
+diff --git a/student_platform/service.py b/student_platform/service.py
+index 79e3974..ef13e51 100644
+--- a/student_platform/service.py
++++ b/student_platform/service.py
+@@ -5,3 +5,3 @@ from datetime import datetime, timedelta
+ 
+-from errors import (AccountLocked, DuplicateAccount, DuplicateReport, InvalidCollegeEmail,
++from errors import (AccountLocked, AccountSuspended, DuplicateAccount, DuplicateReport, InvalidCollegeEmail,
+                     InvalidCredentials, InvalidReview, NotAuthorised, NotFound, NotVerified)
+@@ -14,2 +14,6 @@ DEFAULT_RADIUS_KM = 5
+ 
++def normalise_email(email):
++    return email.strip().lower()
++
++
+ def hash_password(password):
+@@ -61,3 +65,4 @@ class Platform:
+     def create_admin(self, name, email, password):
+-        user = User(self._next("AD"), name, email, hash_password(password), role="admin", verified=True)
++        user = User(self._next("AD"), name, normalise_email(email), hash_password(password), role="admin",
++                    verified=True)
+         self.users[user.user_id] = user
+@@ -66,2 +71,3 @@ class Platform:
+     def find_user(self, email):
++        email = normalise_email(email)
+         for user in self.users.values():
+@@ -77,4 +83,5 @@ class Platform:
+             raise NotFound("college")
++        email = normalise_email(email)
+         domain = email.split("@")[-1]
+-        if not domain.endswith(college.domain):
++        if domain != college.domain and not domain.endswith("." + college.domain):
+             raise InvalidCollegeEmail(email)
+@@ -96,2 +103,4 @@ class Platform:
+             raise InvalidCredentials(email)
++        if user.suspended:
++            raise AccountSuspended(email)
+         user.failed_attempts = 0
+@@ -144,3 +153,3 @@ class Platform:
+             raise NotFound("recommendation")
+-        if rating < 1 or rating > 5:
++        if isinstance(rating, bool) or not isinstance(rating, int) or rating < 1 or rating > 5:
+             raise InvalidReview("rating must be between 1 and 5")

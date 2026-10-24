@@ -1,0 +1,20 @@
+[PASS] GET /health: HTTP 200 (expected 200) {"status": "ok"}
+[PASS] POST /register (college email): HTTP 201 (expected 201) {"user_id": "ST0017", "verified": true}
+[PASS] POST /register (non-college email): HTTP 422 (expected 422) {"error": "InvalidCollegeEmail", "message": "Please use your college email address."}
+[PASS] POST /register (look-alike domain): HTTP 422 (expected 422) {"error": "InvalidCollegeEmail", "message": "Please use your college email address."}
+[PASS] POST /register (same email, other case): HTTP 409 (expected 409) {"error": "DuplicateAccount", "message": "An account with this email already exists."}
+[PASS] POST /login: HTTP 200 (expected 200) {"token": "XNdqcWw5fJXV-CSkxrCSTiTyN-Cj_gv8", "role": "student", "name": "Smoke Student"}
+[PASS] GET /search pg_hostel: HTTP 200 (expected 200) {"results": [{"id": "RC0003", "name": "Shree PG for Students", "category": "pg_hostel", "rating": 0.0, "price_
+[PASS] GET /search (nothing within radius): HTTP 200 (expected 200) {"results": [], "message": "No results nearby. Try expanding the search radius."}
+[PASS] GET /events: HTTP 200 (expected 200) {"results": [{"id": "RC0014", "name": "Freshers Meetup", "category": "event", "rating": 0.0, "price_level": 0,
+[PASS] POST /reviews: HTTP 201 (expected 201) {"review_id": "RV0018", "status": "Pending"}
+[PASS] POST /reviews (rating 4.5): HTTP 422 (expected 422) {"error": "InvalidReview", "message": "The review could not be accepted."}
+[PASS] POST validate as student: HTTP 403 (expected 403) {"error": "NotAuthorised", "message": "You do not have permission to do this."}
+[PASS] POST /login (admin): HTTP 200 (expected 200) {"token": "8ZkUV51S5gdeujFu8EXsIXYJZnjFPwFY", "role": "admin", "name": "Platform Admin"}
+[PASS] POST validate as admin: HTTP 200 (expected 200) {"review_id": "RV0018", "status": "Published"}
+[INFO] rating shown in search after approval: [5.0]
+[PASS] POST /login after 5 failures (locked): HTTP 423 (expected 423) {"error": "AccountLocked", "message": "Too many failed attempts. Try again in 15 minutes."}
+[PASS] GET /admin/audit: HTTP 200 (expected 200) [{"id": 9, "at": "2026-10-18T08:24:46.933935", "actor": "ST0017", "action": "login_blocked", "target": "ST0017
+[PASS] POST /logout: HTTP 200 (expected 200) {"status": "logged out"}
+[PASS] GET /admin/audit after logout: HTTP 401 (expected 401) {"error": "LoginRequired", "message": "Please log in first."}
+All smoke checks passed. 
